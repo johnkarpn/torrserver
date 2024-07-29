@@ -90,7 +90,7 @@ echo "$(date): Starting TorrServer ..."
 echo " "
 /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT $TS_OPTIONS &
 echo " "
-sleep 10
+sleep 5
 if [ `ps | grep TorrServer | wc -w` -eq 0 ]; then
     echo "Current TorrServer file is corrupted or invalid options. Trying to recover."
     /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT &

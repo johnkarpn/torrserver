@@ -22,7 +22,7 @@ COPY update_TS.sh /update_TS.sh
 
 RUN apk update \
 && apk upgrade \
-&& apk add --no-cache ffmpeg wget curl ca-certificates jq unzip tzdata \
+&& apk add --no-cache ffmpeg wget curl ca-certificates jq unzip tzdata file \
 && mkdir /TS && chmod -R 666 /TS \
 && mkdir -p $TS_CONF_PATH && chmod -R 666 $TS_CONF_PATH
 
