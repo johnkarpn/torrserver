@@ -1,0 +1,50 @@
+name: Build docker image
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Tag number
+        run : echo ${{ github.ref_name }}
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: set lower case owner name
+        run: |
+          echo "REG_REPO=${REPO,,}" >>${GITHUB_ENV}
+        env:
+          REPO: '${{ github.repository }}'
+      -
+        name: CHECK ENVS
+        run: |
+          echo ${{ env.REG_REPO }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ env.REG_REPO }}:${{ github.ref_name }}
+            ghcr.io/${{ env.REG_REPO }}:latest
