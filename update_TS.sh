@@ -20,18 +20,23 @@ if [ ! -z "$BIP_URL" ]; then
     cd /TS/updates
     
     EXT=$(basename $(wget -nv --spider --no-check-certificate --user-agent="$USER_AGENT" \
-    --content-disposition "$BIP_URL" -O - 2>&1 | grep -o 'http.+\w+' | cut -f 1 -d " ") | grep -o '[^.]*$')
+    --content-disposition "$BIP_URL" -O - 2>&1 | egrep -o 'http.+\w+' | cut -f 1 -d " ") | egrep -o '[^.]*$')
     
     wget -nv --no-check-certificate --user-agent="$USER_AGENT" \
     --content-disposition "$BIP_URL" --output-document="bip_raw.$EXT"
-    
-    file -b --mime-type "bip_raw.$EXT" | ( grep -q 'text/plain' && cat "bip_raw.$EXT" 2>&1 || gunzip -c "bip_raw.$EXT") | \
-    grep -v '^#' | tr -d "[:blank:]" | \
+
+	unzipcmd="unzip -p"
+    if [[ "$EXT" == "gz" ]]; then
+    	unzipcmd="gunzip -c"
+    fi
+
+    file -b --mime-type "bip_raw.$EXT" | ( (grep -q 'text/plain' && cat "bip_raw.$EXT" 2>&1) || ${unzipcmd} "bip_raw.$EXT") | \
+    egrep -v '^#' | tr -d "[:blank:]" | \
     awk '{gsub("[a-zA-Z][0-9]+\.[0-9]+\.[0-9]+\.[0-9]+","");print}' | \
     awk '{gsub("[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+[a-zA-Z]","");print}' | \
-    grep -o '([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}-[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' | \
+    egrep -o '([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}-[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' | \
     sed -r 's/0*([0-9]+)\.0*([0-9]+)\.0*([0-9]+)\.0*([0-9]+)/\1.\2.\3.\4/g' | \
-    grep -v '^(0|22[4-9]|2[3-5]|192\.168\.[0-9]{1,3}\.[0-9]{1,3})' | \
+    egrep -v '^(0|22[4-9]|2[3-5]|192\.168\.[0-9]{1,3}\.[0-9]{1,3})' | \
     sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n -u > bip.txt
     
     rm -f "bip_raw.$EXT"
