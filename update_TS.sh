@@ -74,7 +74,7 @@ case $(uname -m) in
 esac
 
 BIN_NAME="TorrServer-linux-${ARCH}"
-TS_URL="https://github.com/YouROK/TorrServer/releases/latest/download/$BIN_NAME"
+TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
 
 wget --no-check-certificate --no-verbose --user-agent="$USER_AGENT" --output-document=/TS/updates/TorrServer --tries=3 "$TS_URL"
 
