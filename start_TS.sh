@@ -12,7 +12,6 @@ case $(uname -m) in
 esac
 
 export BIN_NAME="TorrServer-linux-${ARCH}"
-export TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
 
 # Folder for disk cache
 [ ! -d "$TS_TORR_DIR" ] && mkdir -p "$TS_TORR_DIR" && chmod -R 777 "$TS_TORR_DIR"
@@ -72,6 +71,7 @@ if $LINUX_UPDATE ; then
     echo " "
 fi
 
+export TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
 if [ ! -e /TS/TorrServer ]; then
 	wget -q --no-check-certificate -O /TS/TorrServer "$TS_URL"
     chmod +x /TS/TorrServer
