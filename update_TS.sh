@@ -62,19 +62,6 @@ fi
 echo " "
 echo "=================================================="
 echo "$(date): Start checking for TorrServer updates ..."
-case $(uname -m) in
-    i386) ARCH="386" ;;
-    i686) ARCH="386" ;;
-    x86_64) ARCH="amd64" ;;
-    aarch64) ARCH="arm64" ;;
-    armv7|armv7l) ARCH="arm7" ;;
-    armv6|armv6l) ARCH="arm5" ;;
-#    armv5|armv5l) ARCH="arm5" ;;
-    *) echo "Unsupported Arch. Can't continue."; exit 1 ;;
-esac
-
-BIN_NAME="TorrServer-linux-${ARCH}"
-TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
 
 wget --no-check-certificate --no-verbose --user-agent="$USER_AGENT" --output-document=/TS/updates/TorrServer --tries=3 "$TS_URL"
 

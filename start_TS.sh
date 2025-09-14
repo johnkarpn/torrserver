@@ -71,7 +71,12 @@ if $LINUX_UPDATE ; then
     echo " "
 fi
 
-export TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
+if [[ "$TS_RELEASE" == "latest" ]]; then
+  export TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
+else
+  export TS_URL="https://github.com/YouROK/TorrServer/releases/download/$TS_RELEASE/$BIN_NAME"
+fi
+
 if [ ! -e /TS/TorrServer ]; then
 	wget -q --no-check-certificate -O /TS/TorrServer "$TS_URL"
     chmod +x /TS/TorrServer
