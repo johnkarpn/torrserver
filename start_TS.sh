@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 case $(uname -m) in
     i386) ARCH="386" ;;
@@ -15,7 +15,7 @@ export BIN_NAME="TorrServer-linux-${ARCH}"
 
 # Folder for disk cache
 [ ! -d "$TS_TORR_DIR" ] && mkdir -p "$TS_TORR_DIR" && chmod -R 777 "$TS_TORR_DIR"
-ln -s "$TS_TORR_DIR" /torrents
+[ ! -L /torrents ] && ln -s "$TS_TORR_DIR" /torrents
 
 # Configuration file ts.ini source. Do not change!
 export INI_URL="https://raw.githubusercontent.com/johnkarpn/torrserver/main/ts.ini"
@@ -61,17 +61,17 @@ if [ -e /TS/cron.env ]; then
     rm -f /TS/cron.env
 fi
 
-if $LINUX_UPDATE ; then
+if [ "$LINUX_UPDATE" = "true" ]; then
     echo " "
     echo "============================================="
     echo "$(date): Start checking for Linux updates ..."
-    apk update && apk upgrade && apk cache clean
+    apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
     echo "Finished checking for Linux updates."
     echo "============================================="
     echo " "
 fi
 
-if [[ "$TS_RELEASE" == "latest" ]]; then
+if [ "$TS_RELEASE" = "latest" ]; then
   export TS_URL="https://github.com/YouROK/TorrServer/releases/$TS_RELEASE/download/$BIN_NAME"
 else
   export TS_URL="https://github.com/YouROK/TorrServer/releases/download/$TS_RELEASE/$BIN_NAME"
@@ -96,17 +96,17 @@ echo " "
 /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT $TS_OPTIONS &
 echo " "
 sleep 5
-if [ `ps | grep TorrServer | wc -w` -eq 0 ]; then
+if ! pgrep -f "TorrServer" > /dev/null; then
     echo "Current TorrServer file is corrupted or invalid options. Trying to recover."
     /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT &
-    if [ `ps | grep TorrServer | wc -w` -eq 0 ]; then
+    if ! pgrep -f "TorrServer" > /dev/null; then
         if [ -e "$TS_CONF_PATH/backup/TorrServer" ]; then
             rm -f /TS/TorrServer
             cp -f "$TS_CONF_PATH/backup/TorrServer" /TS/TorrServer
             chmod a+x /TS/TorrServer
             /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT &
             sleep 5
-            if [ `ps | grep TorrServer | wc -w` -eq 0 ]; then
+            if ! pgrep -f "TorrServer" > /dev/null; then
                 echo "Fatal error!!!"
             else
                 echo "Started from backup without options"
@@ -127,7 +127,7 @@ fi
 
 env | grep -v cron_task | awk 'NF {sub("=","=\"",$0); print ""$0"\""}' > /TS/cron.env && chmod a+r /TS/cron.env
 
-if $TS_UPDATE ; then
+if [ "$TS_UPDATE" = "true" ]; then
     . /update_TS.sh
 fi
 
@@ -138,6 +138,7 @@ if [ ! -z "$cron_task" ]; then
     echo "$(date): Cron task set to: $(crontab -l)"
     echo "============================================="
     echo " "
+    service cron start
 fi
 
 tail -f /dev/null

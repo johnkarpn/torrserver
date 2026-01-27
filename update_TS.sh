@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Sleep a random number of seconds before executing a task (1 - 40 sec.)
 sleep $((RANDOM % 40))
@@ -46,7 +46,8 @@ if [ ! -z "$BIP_URL" ]; then
         cp -f /TS/updates/bip.txt "$TS_CONF_PATH/bip.txt"
         chmod a+r "$TS_CONF_PATH/bip.txt"
         echo "New bip.txt size: $bip_size strings. Restarting TorrServer..."
-        pkill TorrServer
+        pkill TorrServer || true
+        sleep 3
         cd $TS_TORR_DIR
         /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT $TS_OPTIONS &
     else
@@ -76,13 +77,14 @@ if [ $? -eq 0 -a ! -z "$updated_ver" ]; then
         else
             [ -e "$TS_CONF_PATH/backup/TorrServer" ] && rm -f "$TS_CONF_PATH/backup/TorrServer"
         fi
-        pkill TorrServer
+        pkill TorrServer || true
+        sleep 3
         cp -f /TS/TorrServer "$TS_CONF_PATH/backup/"
         cp -f /TS/updates/TorrServer /TS/TorrServer
         chmod a+x /TS/TorrServer
         /TS/TorrServer --path $TS_CONF_PATH/ --torrentsdir $TS_TORR_DIR --port $TS_PORT $TS_OPTIONS &
         sleep 5
-        if [ `ps | grep TorrServer | wc -w` -eq 0 ]; then
+        if ! pgrep -f TorrServer >/dev/null; then
             echo "Error during the update process: downloaded file is corrupted. Restoring backup."
             rm -f /TS/TorrServer
             cp -f "$TS_CONF_PATH/backup/TorrServer" /TS/TorrServer
