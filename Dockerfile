@@ -1,7 +1,7 @@
 #
 # This is unofficial dockerized precompiled TorrServer
 #
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 LABEL maintainer="John Karpn" \
       org.opencontainers.image.title="TorrServer" \

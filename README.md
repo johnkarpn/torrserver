@@ -3,7 +3,7 @@
 ### Unofficial Docker Image for TorrServer
 
 "TorrServer, stream torrent to http" — unofficial dockerized
-precompiled [TorrServer](https://github.com/YouROK/TorrServer) on Ubuntu 24.04.
+precompiled [TorrServer](https://github.com/YouROK/TorrServer) on Ubuntu 26.04 LTS.
 
 ![TorrServer](https://raw.githubusercontent.com/johnkarpn/torrserver/main/ts.jpg)
 
