@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>TorrServer</Name>
+  <Repository>ghcr.io/johnkarpn/torrserver:latest</Repository>
+  <Registry>https://github.com/johnkarpn/torrserver/pkgs/container/torrserver</Registry>
+  <Network>host</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/johnkarpn/torrserver/issues</Support>
+  <Project>https://github.com/YouROK/TorrServer</Project>
+  <Overview>TorrServer - stream torrents to http. Unofficial image with automatic TorrServer updates, peers blocklist and ffprobe.&#xD;
+Additional settings are available in ts.ini in the config directory.</Overview>
+  <Category>Downloaders: MediaServer:Video</Category>
+  <WebUI>http://[IP]:[PORT:8090]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/johnkarpn/torrserver/main/unraid/torrserver.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/johnkarpn/torrserver/main/ts.jpg</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <Requires/>
+  <Config Name="Config" Target="/TS/db" Default="/mnt/user/appdata/torrserver" Mode="rw" Description="Settings, database, ts.ini, blocklist" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/torrserver</Config>
+  <Config Name="Cache" Target="/TS/db/torrents" Default="/mnt/user/appdata/torrserver/torrents" Mode="rw" Description="Disk cache (up to CacheSize, 5 GB by default) and autoload directory for .torrent files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/torrserver/torrents</Config>
+  <Config Name="Web port" Target="TS_PORT" Default="8090" Mode="" Description="TorrServer web port" Type="Variable" Display="always" Required="false" Mask="false">8090</Config>
+  <Config Name="Version" Target="TS_RELEASE" Default="latest" Mode="" Description="latest or a specific release, e.g. MatriX.147" Type="Variable" Display="always" Required="false" Mask="false">latest</Config>
+  <Config Name="Auto-update TorrServer" Target="TS_UPDATE" Default="true|false" Mode="" Description="Update TorrServer at start and by schedule" Type="Variable" Display="always" Required="false" Mask="false">true</Config>
+  <Config Name="Update schedule" Target="cron_task" Default="20 4 * * *" Mode="" Description="Cron format, none - no scheduled updates" Type="Variable" Display="always" Required="false" Mask="false">20 4 * * *</Config>
+  <Config Name="Peers blocklist URL" Target="BIP_URL" Default="https://upd.emule-security.org/ipfilter.zip" Mode="" Description="eMule ipfilter / p2p / plain list (zip, gz or text), none - disabled" Type="Variable" Display="always" Required="false" Mask="false">https://upd.emule-security.org/ipfilter.zip</Config>
+  <Config Name="Options" Target="TS_OPTIONS" Default="" Mode="" Description="Extra TorrServer options, e.g. -a (http auth, users in accs.db)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID to run TorrServer as" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID to run TorrServer as" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+  <Config Name="UMASK" Target="UMASK" Default="000" Mode="" Description="Permissions mask for created files" Type="Variable" Display="advanced" Required="false" Mask="false">000</Config>
+  <Config Name="Update OS packages" Target="LINUX_UPDATE" Default="false|true" Mode="" Description="apt-get upgrade at start (slow, image is rebuilt weekly anyway)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+</Container>
