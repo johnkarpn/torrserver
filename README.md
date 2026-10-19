@@ -59,15 +59,14 @@ services:
 
 #### Unraid
 
-Docker → Add Container → add `https://github.com/johnkarpn/torrserver` to **Template repositories** at the bottom → Save.
-The **TorrServer** template appears in the Template list under `johnkarpn`.
-
-Or download the template from the Unraid terminal, it appears under **User templates**:
+Download the template from the Unraid terminal:
 
 ```
 wget -O /boot/config/plugins/dockerMan/templates-user/my-TorrServer.xml \
   https://raw.githubusercontent.com/johnkarpn/torrserver/main/unraid/torrserver.xml
 ```
+
+Then Docker → Add Container → Template → **User templates** → **TorrServer**.
 
 Migrating an existing container: remove it (appdata stays), add a new one from the template and set **Config**
 to the existing directory mapped to `/TS/db`, **Cache** to its `torrents` subdirectory.
