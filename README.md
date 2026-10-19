@@ -21,9 +21,8 @@ Compared to the [official image](https://github.com/YouROK/TorrServer#running-in
 ### Image tags
 
 - `latest` — the latest build, rebuilt weekly.
-- `2`, `2.0`, `2.0.0` — image versions ([semver](https://semver.org/)), not related to the TorrServer version.
+- `2`, `2.0`, `2.0.1`... — image versions ([semver](https://semver.org/)), not related to the TorrServer version.
   TorrServer itself is updated automatically, see `TS_RELEASE` and `TS_UPDATE`.
-  Old tags like `MatriX.141` belong to the previous versions of the image.
 
 ### Requirements
 
@@ -68,9 +67,6 @@ wget -O /boot/config/plugins/dockerMan/templates-user/my-TorrServer.xml \
 
 Then Docker → Add Container → Template → **User templates** → **TorrServer**.
 
-Migrating an existing container: remove it (appdata stays), add a new one from the template and set **Config**
-to the existing directory mapped to `/TS/db`, **Cache** to its `torrents` subdirectory.
-
 ### Configuration
 
 Settings are taken from docker environment variables, then from `ts.ini` in the config directory, then defaults.
@@ -103,10 +99,6 @@ Files in the config directory (`/TS/db`):
 
 ### Notes
 
-- Peers blocklist is written to `blocklist` file. Earlier versions of this image wrote it to `bip.txt`,
-  but TorrServer uses `bip.txt` as the **web access** blacklist (Settings → WAF since MatriX.147).
-  On start the legacy `bip.txt` is removed and a huge WAF blacklist imported from it is cleared (`settings.json.bak` is
-  saved).
 - If TorrServer fails to start, the container retries without `TS_OPTIONS`, then with the version from `backup/`.
   To fix a broken binary manually, download it from [releases](https://github.com/YouROK/TorrServer/releases),
   rename to `TorrServer`, put to `backup/` and restart the container.

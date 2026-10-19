@@ -101,7 +101,7 @@ updated_bin=0
 # ---------------------------------------------------------------------------
 if [ -n "$BIP_URL" ]; then
     log "Checking for blocklist updates from $BIP_URL ..."
-    raw="$UPD_DIR/bip_raw"
+    raw="$UPD_DIR/blocklist_raw"
     if download "$BIP_URL" "$raw"; then
         case $(file -b --mime-type "$raw") in
             application/zip)                    unzip -p "$raw" ;;

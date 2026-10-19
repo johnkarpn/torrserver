@@ -26,7 +26,6 @@ RUN apt-get update \
        curl \
        ffmpeg \
        file \
-       jq \
        tini \
        tzdata \
        unzip \

@@ -102,32 +102,6 @@ done
 [ -n "$UMASK" ] && umask "$UMASK"
 
 # ---------------------------------------------------------------------------
-# Migration: earlier versions of this image wrote the peers blocklist from
-# BIP_URL to bip.txt, but TorrServer uses bip.txt as the web access blacklist
-# (MatriX.147+ imports it into "waf" section of settings.json).
-# Peers blocklist now lives in the "blocklist" file.
-# ---------------------------------------------------------------------------
-if [ -n "$BIP_URL" ]; then
-    for f in bip.txt bip.txt.bak; do
-        if [ -e "$TS_CONF_PATH/$f" ]; then
-            rm -f "$TS_CONF_PATH/$f"
-            log "Removed legacy $TS_CONF_PATH/$f (peers blocklist is in $TS_CONF_PATH/blocklist now)."
-        fi
-    done
-    waf_size=$(jq '.waf.blacklist | length' "$TS_CONF_PATH/settings.json" 2>/dev/null)
-    if [ "${waf_size:-0}" -gt 1000 ]; then
-        cp -f "$TS_CONF_PATH/settings.json" "$TS_CONF_PATH/settings.json.bak"
-        if jq '.waf.blacklist = []' "$TS_CONF_PATH/settings.json.bak" > "$TS_CONF_PATH/settings.json.new"; then
-            mv -f "$TS_CONF_PATH/settings.json.new" "$TS_CONF_PATH/settings.json"
-            log "Cleared web access blacklist imported from legacy bip.txt ($waf_size entries)," \
-                "backup: $TS_CONF_PATH/settings.json.bak"
-        else
-            rm -f "$TS_CONF_PATH/settings.json.new"
-        fi
-    fi
-fi
-
-# ---------------------------------------------------------------------------
 # OS updates (optional, slows down the start)
 # ---------------------------------------------------------------------------
 if [ "$LINUX_UPDATE" = "true" ]; then
