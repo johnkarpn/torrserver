@@ -14,13 +14,14 @@ Additional settings are available in ts.ini in the config directory.</Overview>
   <Category>Downloaders: MediaServer:Video</Category>
   <WebUI>http://[IP]:[PORT:8090]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/johnkarpn/torrserver/main/unraid/torrserver.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/johnkarpn/torrserver/main/ts.jpg</Icon>
-  <ExtraParams/>
+  <Icon>https://raw.githubusercontent.com/YouROK/TorrServer/master/web/public/logo.png</Icon>
+  <ExtraParams>--restart=unless-stopped</ExtraParams>
   <PostArgs/>
   <CPUset/>
   <Requires/>
   <Config Name="Config" Target="/TS/db" Default="/mnt/user/appdata/torrserver" Mode="rw" Description="Settings, database, ts.ini, blocklist" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/torrserver</Config>
   <Config Name="Cache" Target="/TS/db/torrents" Default="/mnt/user/appdata/torrserver/torrents" Mode="rw" Description="Disk cache (up to CacheSize, 5 GB by default) and autoload directory for .torrent files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/torrserver/torrents</Config>
+  <Config Name="WebUI" Target="8090" Default="8090" Mode="tcp" Description="Web port, used with bridge network only (should match TS_PORT)" Type="Port" Display="always" Required="false" Mask="false">8090</Config>
   <Config Name="Web port" Target="TS_PORT" Default="8090" Mode="" Description="TorrServer web port" Type="Variable" Display="always" Required="false" Mask="false">8090</Config>
   <Config Name="Version" Target="TS_RELEASE" Default="latest" Mode="" Description="latest or a specific release, e.g. MatriX.147" Type="Variable" Display="always" Required="false" Mask="false">latest</Config>
   <Config Name="Auto-update TorrServer" Target="TS_UPDATE" Default="true|false" Mode="" Description="Update TorrServer at start and by schedule" Type="Variable" Display="always" Required="false" Mask="false">true</Config>
