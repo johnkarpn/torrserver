@@ -31,7 +31,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           flavor: latest=false
           # Image version (semver), not related to the TorrServer version:
-          # git tag v2.1.0 -> 2.1.0, 2.1, 2, latest; scheduled build -> latest
+          # git tag v1.2.0 -> 1.2.0, 1.2, 1, latest; scheduled build -> latest
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}

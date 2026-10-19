@@ -21,7 +21,7 @@ Compared to the [official image](https://github.com/YouROK/TorrServer#running-in
 ### Image tags
 
 - `latest` — the latest build, rebuilt weekly.
-- `2`, `2.0`, `2.0.1`... — image versions ([semver](https://semver.org/)), not related to the TorrServer version.
+- `1`, `1.0`, `1.0.0`... — image versions ([semver](https://semver.org/)), not related to the TorrServer version.
   TorrServer itself is updated automatically, see `TS_RELEASE` and `TS_UPDATE`.
 
 ### Requirements
